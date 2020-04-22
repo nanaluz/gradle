@@ -21,6 +21,7 @@ import org.gradle.api.internal.file.collections.LazilyInitializedFileCollection
 import org.gradle.api.plugins.scala.ScalaBasePlugin
 import org.gradle.language.scala.internal.toolchain.DefaultScalaToolProvider
 import org.gradle.test.fixtures.AbstractProjectBuilderSpec
+import spock.lang.Unroll
 
 class ScalaRuntimeTest extends AbstractProjectBuilderSpec {
 
@@ -28,9 +29,18 @@ class ScalaRuntimeTest extends AbstractProjectBuilderSpec {
         project.pluginManager.apply(ScalaBasePlugin)
     }
 
-    def "inferred Scala class path contains 'scala-compiler' repository dependency and 'compiler-bridge' matching 'scala-library' Jar found on class path"() {
+    @Unroll
+    def "inferred Scala class path contains 'scala-compiler' repository dependency and 'compiler-bridge' matching 'scala-library' Jar found on class path (default zinc: #defaultZinc)"() {
         project.repositories {
             mavenCentral()
+        }
+
+        String usedZincVersion = DefaultScalaToolProvider.DEFAULT_ZINC_VERSION
+        if (!defaultZinc) {
+            usedZincVersion = "1.3.4"
+            project.scala {
+                zincVersion = usedZincVersion
+            }
         }
 
         when:
@@ -51,14 +61,17 @@ class ScalaRuntimeTest extends AbstractProjectBuilderSpec {
             it.dependencies.any { d ->
                 d.group == "org.scala-sbt" &&
                 d.name == "compiler-bridge_2.10" &&
-                d.version == DefaultScalaToolProvider.DEFAULT_ZINC_VERSION
+                d.version == usedZincVersion
             }
             it.dependencies.any { d ->
                 d.group == "org.scala-sbt" &&
                 d.name == "compiler-interface" &&
-                d.version == DefaultScalaToolProvider.DEFAULT_ZINC_VERSION
+                d.version == usedZincVersion
             }
         }
+
+        where:
+        defaultZinc << [true, false]
     }
 
     def "inference fails if 'scalaTools' configuration is empty and no repository declared"() {
