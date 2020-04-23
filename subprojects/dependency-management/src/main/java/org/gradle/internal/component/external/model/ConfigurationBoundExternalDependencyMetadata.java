@@ -165,6 +165,19 @@ public class ConfigurationBoundExternalDependencyMetadata implements ModuleDepen
         return new ConfigurationBoundExternalDependencyMetadata(configuration, componentId, newDelegate, alwaysUseAttributeMatching);
     }
 
+    public ConfigurationBoundExternalDependencyMetadata withoutRules() {
+        ConfigurationMetadata config = this.configuration;
+        if (config instanceof DefaultConfigurationMetadata) {
+            DefaultConfigurationMetadata cmd = (DefaultConfigurationMetadata) config;
+            config = cmd.mutate()
+                .isolate()
+                .build();
+        }
+        return new ConfigurationBoundExternalDependencyMetadata(
+            config, componentId, dependencyDescriptor, alwaysUseAttributeMatching, reason
+        );
+    }
+
     @Override
     public ModuleComponentSelector getSelector() {
         return dependencyDescriptor.getSelector();

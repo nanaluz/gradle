@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
+import org.gradle.internal.component.model.ConfigurationMetadataHelper;
 import org.gradle.internal.component.model.ExcludeMetadata;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class RealisedConfigurationMetadata extends AbstractConfigurationMetadata
                                          boolean mavenArtifactDiscovery,
                                          ImmutableList<ModuleDependencyMetadata> configDependencies,
                                          boolean addedByRule) {
-        super(componentId, name, transitive, visible, artifacts, hierarchy, excludes, attributes, configDependencies, capabilities, mavenArtifactDiscovery);
+        super(componentId, name, transitive, visible, artifacts, hierarchy, excludes, attributes, ConfigurationMetadataHelper.isolate(configDependencies), capabilities, mavenArtifactDiscovery);
         this.addedByRule = addedByRule;
     }
 

@@ -247,6 +247,8 @@ public class DefaultConfigurationMetadata extends AbstractConfigurationMetadata 
         private CapabilitiesMetadata capabilities;
         private ImmutableAttributes attributes;
         private ImmutableList<? extends ModuleComponentArtifactMetadata> artifacts;
+        private VariantMetadataRules componentMetadataRules = DefaultConfigurationMetadata.this.componentMetadataRules;
+        private Factory<List<ModuleDependencyMetadata>> dependenciesFactory = lazyConfigDependencies();
 
         Builder withName(String name) {
             this.name = name;
@@ -284,6 +286,12 @@ public class DefaultConfigurationMetadata extends AbstractConfigurationMetadata 
             return this;
         }
 
+        Builder isolate() {
+            this.componentMetadataRules = null;
+            this.dependenciesFactory = null;
+            return this;
+        }
+
         public DefaultConfigurationMetadata build() {
             return new DefaultConfigurationMetadata(
                     getComponentId(),
@@ -295,7 +303,7 @@ public class DefaultConfigurationMetadata extends AbstractConfigurationMetadata 
                     componentMetadataRules,
                     getExcludes(),
                     attributes == null ? DefaultConfigurationMetadata.super.getAttributes() : attributes,
-                    lazyConfigDependencies(),
+                    dependenciesFactory,
                     dependencyFilter,
                     capabilities == null ? DefaultConfigurationMetadata.this.getCapabilities() : capabilities,
                     DefaultConfigurationMetadata.super.requiresMavenArtifactDiscovery()
