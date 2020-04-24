@@ -60,6 +60,10 @@ dependencies {
     integTestRuntimeResources(testFixtures(project(":platformPlay")))
 }
 
+strictCompile {
+    ignoreDeprecations = true
+}
+
 tasks.withType<IntegrationTest>().configureEach {
     dependsOn(":platformPlay:integTestPrepare")
     // this is a workaround for which we need a better fix:

@@ -26,10 +26,10 @@ public class DiagnosticsServices extends AbstractPluginServiceRegistry {
     @Override
     public void registerGlobalServices(ServiceRegistration registration) {
         registration.addProvider(new Object() {
-            TypeAwareBinaryRenderer createBinaryRenderer(List<AbstractBinaryRenderer> renderers, ModelSchemaStore schemaStore) {
+            TypeAwareBinaryRenderer createBinaryRenderer(List<AbstractBinaryRenderer<?>> renderers, ModelSchemaStore schemaStore) {
                 TypeAwareBinaryRenderer renderer = new TypeAwareBinaryRenderer();
                 renderer.register(new BinaryRenderer(schemaStore));
-                for (AbstractBinaryRenderer binaryRenderer : renderers) {
+                for (AbstractBinaryRenderer<?> binaryRenderer : renderers) {
                     renderer.register(binaryRenderer);
                 }
                 return renderer;

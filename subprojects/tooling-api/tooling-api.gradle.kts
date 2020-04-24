@@ -90,6 +90,10 @@ dependencies {
     integTestRuntimeOnly(project(":apiMetadata"))
 }
 
+strictCompile {
+    deactivated = true
+}
+
 classycle {
     excludePatterns.set(listOf("org/gradle/tooling/**"))
 }

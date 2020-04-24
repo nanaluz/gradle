@@ -55,3 +55,7 @@ dependencies {
     testFixturesImplementation(library("guava"))
     testFixturesImplementation(testFixtures(project(":ide")))
 }
+
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}

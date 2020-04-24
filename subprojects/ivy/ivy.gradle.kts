@@ -73,6 +73,10 @@ dependencies {
     integTestRuntimeOnly(project(":kotlinDslProviderPlugins"))
 }
 
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+
 testFilesCleanup {
     policy.set(WhenNotEmpty.REPORT)
 }

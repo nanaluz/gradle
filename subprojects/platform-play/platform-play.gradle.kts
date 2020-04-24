@@ -86,6 +86,10 @@ dependencies {
     integTestRuntimeResources(testFixtures(project(":platformPlay")))
 }
 
+strictCompile {
+    deactivated = true
+}
+
 tasks.named<Test>("integTest") {
     exclude("org/gradle/play/prepare/**")
 }

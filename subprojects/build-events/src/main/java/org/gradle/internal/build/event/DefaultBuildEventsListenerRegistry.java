@@ -150,7 +150,7 @@ public class DefaultBuildEventsListenerRegistry implements BuildEventsListenerRe
                     return;
                 }
                 try {
-                    handle((T) next);
+                    handle(Cast.uncheckedCast(next));
                 } catch (Exception e) {
                     failure.set(e);
                     break;

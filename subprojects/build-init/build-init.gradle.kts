@@ -63,6 +63,10 @@ configurations.integTestRuntimeClasspath {
     extendsFrom(configurations.fullGradleRuntime.get())
 }
 
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+
 tasks {
     register("updateInitPluginTemplateVersionFile") {
         group = "Build init"

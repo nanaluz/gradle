@@ -41,6 +41,10 @@ dependencies {
     integTestRuntimeOnly(project(":plugins"))
 }
 
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+
 classycle {
     excludePatterns.set(listOf(
         "org/gradle/api/internal/tasks/compile/**",

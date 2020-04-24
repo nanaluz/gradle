@@ -42,3 +42,8 @@ dependencies {
     integTestRuntimeOnly(project(":ivy"))
     integTestRuntimeOnly(project(":maven"))
 }
+
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+

@@ -15,7 +15,6 @@
  */
 plugins {
     gradlebuild.distribution.`plugins-api-java`
-    // id "gradlebuild.strict-compile"
 }
 
 gradlebuildJava.usedInWorkers()
@@ -64,6 +63,10 @@ dependencies {
     testRuntimeOnly(project(":runtimeApiInfo"))
 
     integTestRuntimeOnly(project(":testingJunitPlatform"))
+}
+
+strictCompile {
+    deactivated = true //TODO this should be addressed
 }
 
 classycle {

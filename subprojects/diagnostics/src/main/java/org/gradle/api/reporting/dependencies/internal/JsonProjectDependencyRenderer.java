@@ -161,11 +161,11 @@ public class JsonProjectDependencyRenderer {
         return configuration.isCanBeResolved() && !isDeprecatedForResolving;
     }
 
-    private List<Map> createConfigurations(Project project) {
+    private List<Map<String, Object>> createConfigurations(Project project) {
         Iterable<Configuration> configurations = getNonDeprecatedConfigurations(project);
-        return CollectionUtils.collect(configurations, new Transformer<Map, Configuration>() {
+        return CollectionUtils.collect(configurations, new Transformer<Map<String, Object>, Configuration>() {
             @Override
-            public Map transform(Configuration configuration) {
+            public Map<String, Object> transform(Configuration configuration) {
                 LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>(4);
                 map.put("name", configuration.getName());
                 map.put("description", configuration.getDescription());
@@ -177,7 +177,7 @@ public class JsonProjectDependencyRenderer {
         });
     }
 
-    private List createDependencies(Configuration configuration) {
+    private List<Object>  createDependencies(Configuration configuration) {
         if (canBeResolved(configuration)) {
             ResolutionResult result = configuration.getIncoming().getResolutionResult();
             RenderableDependency root = new RenderableModuleResult(result.getRoot());
@@ -187,11 +187,11 @@ public class JsonProjectDependencyRenderer {
         }
     }
 
-    private List createDependencyChildren(RenderableDependency dependency, final Set<Object> visited) {
+    private List<Object> createDependencyChildren(RenderableDependency dependency, final Set<Object> visited) {
         Iterable<? extends RenderableDependency> children = dependency.getChildren();
-        return CollectionUtils.collect(children, new Transformer<Map, RenderableDependency>() {
+        return CollectionUtils.collect(children, new Transformer<Map<String, Object>, RenderableDependency>() {
             @Override
-            public Map transform(RenderableDependency childDependency) {
+            public Map<String, Object> transform(RenderableDependency childDependency) {
                 boolean alreadyVisited = !visited.add(childDependency.getId());
                 boolean alreadyRendered = alreadyVisited && !childDependency.getChildren().isEmpty();
                 String name = replaceArrow(childDependency.getName());
@@ -220,7 +220,7 @@ public class JsonProjectDependencyRenderer {
         return null;
     }
 
-    private List createModuleInsights(final Configuration configuration) {
+    private List<Object> createModuleInsights(final Configuration configuration) {
         Iterable<ModuleIdentifier> modules = collectModules(configuration);
         return CollectionUtils.collect(modules, new Transformer<Object, ModuleIdentifier>() {
             @Override
@@ -258,14 +258,14 @@ public class JsonProjectDependencyRenderer {
         }
     }
 
-    private Map createModuleInsight(ModuleIdentifier module, Configuration configuration) {
+    private Map<String, Object> createModuleInsight(ModuleIdentifier module, Configuration configuration) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>(2);
         map.put("module", module.toString());
         map.put("insight", createInsight(module, configuration));
         return map;
     }
 
-    private List createInsight(ModuleIdentifier module, final Configuration configuration) {
+    private List<Object> createInsight(ModuleIdentifier module, final Configuration configuration) {
         final Spec<DependencyResult> dependencySpec = new StrictDependencyResultSpec(module);
 
         ResolutionResult result = configuration.getIncoming().getResolutionResult();
@@ -296,7 +296,7 @@ public class JsonProjectDependencyRenderer {
         });
     }
 
-    private List createInsightDependencyChildren(RenderableDependency dependency, final Set<Object> visited, final Configuration configuration) {
+    private List<Object> createInsightDependencyChildren(RenderableDependency dependency, final Set<Object> visited, final Configuration configuration) {
         Iterable<? extends RenderableDependency> children = dependency.getChildren();
         return CollectionUtils.collect(children, new Transformer<Object, RenderableDependency>() {
             @Override

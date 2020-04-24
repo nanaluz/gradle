@@ -46,6 +46,10 @@ dependencies {
     compileOnly("org.scala-sbt:zinc_2.12:1.3.5")
 }
 
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+
 classycle {
     excludePatterns.set(listOf(
         "org/gradle/api/internal/tasks/scala/**",

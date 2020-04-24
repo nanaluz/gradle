@@ -63,17 +63,17 @@ public class TaskDetailPrinter {
         final List<Task> tasks = sort(selection.getTasks());
 
         output.text("Detailed task information for ").withStyle(UserInput).println(taskPath);
-        final ListMultimap<Class, Task> classListMap = groupTasksByType(tasks);
+        final ListMultimap<Class<?>, Task> classListMap = groupTasksByType(tasks);
 
-        final Set<Class> classes = classListMap.keySet();
+        final Set<Class<?>> classes = classListMap.keySet();
         boolean multipleClasses = classes.size() > 1;
-        final List<Class> sortedClasses = sort(classes, new Comparator<Class>() {
+        final List<Class<?>> sortedClasses = sort(classes, new Comparator<Class<?>>() {
             @Override
-            public int compare(Class o1, Class o2) {
+            public int compare(Class<?> o1, Class<?> o2) {
                 return o1.getSimpleName().compareTo(o2.getSimpleName());
             }
         });
-        for (Class clazz : sortedClasses) {
+        for (Class<?> clazz : sortedClasses) {
             output.println();
             final List<Task> tasksByType = classListMap.get(clazz);
             final LinePrefixingStyledTextOutput pathOutput = createIndentedOutput(output, INDENT);
@@ -103,22 +103,22 @@ public class TaskDetailPrinter {
         }
     }
 
-    private ListMultimap<Class, Task> groupTasksByType(List<Task> tasks) {
-        final Set<Class> taskTypes = new TreeSet<Class>(new Comparator<Class>() {
+    private ListMultimap<Class<?>, Task> groupTasksByType(List<Task> tasks) {
+        final Set<Class<?>> taskTypes = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
             @Override
-            public int compare(Class o1, Class o2) {
+            public int compare(Class<?> o1, Class<?> o2) {
                 return o1.getSimpleName().compareTo(o2.getSimpleName());
             }
         });
-        taskTypes.addAll(collect(tasks, new Transformer<Class, Task>() {
+        taskTypes.addAll(collect(tasks, new Transformer<Class<?>, Task>() {
             @Override
-            public Class transform(Task original) {
+            public Class<?> transform(Task original) {
                 return getDeclaredTaskType(original);
             }
         }));
 
-        ListMultimap<Class, Task> tasksGroupedByType = ArrayListMultimap.create();
-        for (final Class taskType : taskTypes) {
+        ListMultimap<Class<?>, Task> tasksGroupedByType = ArrayListMultimap.create();
+        for (final Class<?> taskType : taskTypes) {
             tasksGroupedByType.putAll(taskType, filter(tasks, new Spec<Task>() {
                 @Override
                 public boolean isSatisfiedBy(Task element) {
@@ -129,8 +129,8 @@ public class TaskDetailPrinter {
         return tasksGroupedByType;
     }
 
-    private Class getDeclaredTaskType(Task original) {
-        Class clazz = new DslObject(original).getDeclaredType();
+    private Class<?> getDeclaredTaskType(Task original) {
+        Class<?> clazz = new DslObject(original).getDeclaredType();
         if (clazz.equals(DefaultTask.class)) {
             return org.gradle.api.Task.class;
         } else {

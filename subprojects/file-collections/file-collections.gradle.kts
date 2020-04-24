@@ -56,6 +56,11 @@ dependencies {
     integTestRuntimeOnly(project(":kotlinDslProviderPlugins"))
 }
 
+strictCompile {
+    deactivated = true
+}
+
+
 classycle {
     // Some cycles have been inherited from the time these classes were in :core
     excludePatterns.set(listOf("org/gradle/api/internal/file/collections/"))

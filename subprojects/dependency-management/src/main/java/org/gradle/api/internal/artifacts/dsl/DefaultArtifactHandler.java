@@ -24,6 +24,7 @@ import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.artifacts.PublishArtifact;
 import org.gradle.api.artifacts.dsl.ArtifactHandler;
 import org.gradle.internal.Actions;
+import org.gradle.internal.Cast;
 import org.gradle.internal.deprecation.DeprecatableConfiguration;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.metaobject.DynamicInvokeResult;
@@ -106,7 +107,7 @@ public class DefaultArtifactHandler implements ArtifactHandler, MethodMixIn {
             if (configuration == null) {
                 return DynamicInvokeResult.notFound();
             }
-            List<Object> normalizedArgs = GUtil.flatten(Arrays.asList(arguments), false);
+            List<Object> normalizedArgs = Cast.uncheckedCast(GUtil.flatten(Arrays.asList(arguments), false));
             if (normalizedArgs.size() == 2 && normalizedArgs.get(1) instanceof Closure) {
                 return DynamicInvokeResult.found(pushArtifact(configuration, normalizedArgs.get(0), (Closure) normalizedArgs.get(1)));
             } else {

@@ -57,6 +57,10 @@ dependencies {
     integTestRuntimeOnly(project(":kotlinDslProviderPlugins"))
 }
 
+strictCompile {
+    deactivated = true
+}
+
 classycle {
     excludePatterns.set(listOf(
         "org/gradle/model/internal/core/**",

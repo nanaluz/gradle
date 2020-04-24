@@ -26,14 +26,13 @@ afterEvaluate {
     val ignoreDeprecationsArg = "-Xlint:-deprecation"
 
     val compilerArgs =
-        if (strictCompile.ignoreDeprecations) strictCompilerArgs + ignoreDeprecationsArg
-        else strictCompilerArgs
+        when {
+            strictCompile.deactivated -> emptyList()
+            strictCompile.ignoreDeprecations -> strictCompilerArgs + ignoreDeprecationsArg
+            else -> strictCompilerArgs
+        }
 
     tasks.withType<JavaCompile>().configureEach {
-        options.compilerArgs.addAll(compilerArgs)
-    }
-
-    tasks.withType<GroovyCompile>().configureEach {
         options.compilerArgs.addAll(compilerArgs)
     }
 }

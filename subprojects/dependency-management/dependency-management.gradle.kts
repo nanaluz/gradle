@@ -123,6 +123,10 @@ dependencies {
     crossVersionTestRuntimeOnly(project(":maven"))
 }
 
+strictCompile {
+    deactivated = true
+}
+
 classycle {
     excludePatterns.set(listOf("org/gradle/**"))
 }

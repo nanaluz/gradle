@@ -163,7 +163,7 @@ public class ModelNodeRenderer extends ReportRenderer<ModelNode, TextReportBuild
     }
 
     static Iterable<ModelRuleDescriptor> uniqueExecutedRulesExcludingCreator(final ModelNode model) {
-        Iterable filtered = Iterables.filter(model.getExecutedRules(), new Predicate<ModelRuleDescriptor>() {
+        Iterable<ModelRuleDescriptor> filtered = Iterables.filter(model.getExecutedRules(), new Predicate<ModelRuleDescriptor>() {
             @Override
             public boolean apply(ModelRuleDescriptor input) {
                 return !input.equals(model.getDescriptor());

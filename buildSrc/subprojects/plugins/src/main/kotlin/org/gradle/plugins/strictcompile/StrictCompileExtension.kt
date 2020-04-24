@@ -22,4 +22,6 @@ package org.gradle.plugins.strictcompile
 open class StrictCompileExtension {
 
     var ignoreDeprecations = false
+
+    var deactivated = false
 }

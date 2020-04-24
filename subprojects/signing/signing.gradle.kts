@@ -43,6 +43,10 @@ dependencies {
     testRuntimeOnly(testFixtures(project(":security")))
 }
 
+strictCompile {
+    deactivated = true //TODO this should be addressed
+}
+
 classycle {
     excludePatterns.set(listOf("org/gradle/plugins/signing/**"))
 }

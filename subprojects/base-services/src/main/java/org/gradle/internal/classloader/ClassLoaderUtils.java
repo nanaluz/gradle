@@ -145,7 +145,7 @@ public abstract class ClassLoaderUtils {
             try {
                 MethodHandles.Lookup lookup = getLookupForClassLoader(classLoader);
                 MethodHandle methodHandle = lookup.findVirtual(ClassLoader.class, methodName, methodType);
-                return (T) methodHandle.bindTo(classLoader).invokeWithArguments(arguments);
+                return Cast.uncheckedCast(methodHandle.bindTo(classLoader).invokeWithArguments(arguments));
             } catch (Throwable e) {
                 throw new RuntimeException(e);
             }
@@ -162,10 +162,10 @@ public abstract class ClassLoaderUtils {
     }
 
     private static class ReflectionClassDefiner implements ClassDefiner {
-        private final JavaMethod<ClassLoader, Class> defineClassMethod;
+        private final JavaMethod<ClassLoader, Class<?>> defineClassMethod;
 
         private ReflectionClassDefiner() {
-            defineClassMethod = JavaMethod.of(ClassLoader.class, Class.class, "defineClass", String.class, byte[].class, int.class, int.class);
+            defineClassMethod = Cast.uncheckedCast(JavaMethod.of(ClassLoader.class, Class.class, "defineClass", String.class, byte[].class, int.class, int.class));
         }
 
         @Override
@@ -180,7 +180,7 @@ public abstract class ClassLoaderUtils {
     }
 
     private static class LookupClassDefiner extends AbstractClassLoaderLookuper implements ClassDefiner {
-        private MethodType defineClassMethodType = MethodType.methodType(Class.class, new Class[]{String.class, byte[].class, int.class, int.class});
+        private MethodType defineClassMethodType = MethodType.methodType(Class.class, new Class<?>[]{String.class, byte[].class, int.class, int.class});
 
         @Override
         @SuppressWarnings("unchecked")
@@ -221,8 +221,8 @@ public abstract class ClassLoaderUtils {
     }
 
     private static class LookupPackagesFetcher extends AbstractClassLoaderLookuper implements ClassLoaderPackagesFetcher {
-        private MethodType getPackagesMethodType = MethodType.methodType(Package[].class, new Class[]{});
-        private MethodType getDefinedPackageMethodType = MethodType.methodType(Package.class, new Class[]{String.class});
+        private MethodType getPackagesMethodType = MethodType.methodType(Package[].class, new Class<?>[]{});
+        private MethodType getDefinedPackageMethodType = MethodType.methodType(Package.class, new Class<?>[]{String.class});
 
         @Override
         public Package[] getPackages(ClassLoader classLoader) {

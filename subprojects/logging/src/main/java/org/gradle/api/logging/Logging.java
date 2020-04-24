@@ -34,7 +34,7 @@ public class Logging {
      * @param c the class.
      * @return the logger. Never returns null.
      */
-    public static Logger getLogger(Class c) {
+    public static Logger getLogger(Class<?> c) {
         return (Logger) LoggerFactory.getLogger(c);
     }
 

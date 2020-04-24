@@ -149,6 +149,10 @@ dependencies {
     crossVersionTestRuntimeOnly(project(":testingJunitPlatform"))
 }
 
+strictCompile {
+    deactivated = true
+}
+
 classycle {
     excludePatterns.set(listOf("org/gradle/**"))
 }
